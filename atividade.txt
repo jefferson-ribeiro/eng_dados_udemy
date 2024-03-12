@@ -1,0 +1,109 @@
+Atividades de SQL
+Atividade 1: Seleção Simples
+Descrição: Liste todos os veículos com tipo 'SUV Compacta' e valor inferior a 30.000,00.
+
+
+
+Atividade 2: Junção Simples
+Descrição: Exiba o nome dos clientes e o nome das concessionárias onde realizaram suas compras.
+
+
+
+Atividade 3: Contagem e Agrupamento
+Descrição: Conte quantos vendedores existem em cada concessionária.
+
+
+
+Atividade 4: Subconsulta
+Descrição: Encontre os veículos mais caros vendidos em cada tipo de veículo.
+
+
+
+Atividade 5: Junção Múltipla
+Descrição: Liste o nome do cliente, o veículo comprado e o valor pago, para todas as vendas.
+
+
+
+Atividade 6: Filtro com Agregação
+Descrição: Identifique as concessionárias que venderam mais de 5 veículos.
+
+
+
+Atividade 7: Consulta com ORDER BY e LIMIT
+Descrição: Liste os três veículos mais caros disponíveis.
+
+
+
+Atividade 8: Consulta com Datas
+Descrição: Selecione todos os veículos adicionados no último mês.
+
+
+
+Atividade 9: Junção Externa
+Descrição: Liste todas as cidades e qualquer concessionária nelas, se houver.
+
+
+
+Atividade 10: Consulta com Várias Condições
+Descrição: Encontre clientes que compraram veículos 'SUV Premium Híbrida' ou veículos com valor acima de 60.000,00.
+
+Respostas:
+Atividade 1: Seleção Simples
+sqlCopy code
+SELECT nome, tipo, valor
+FROM veiculos
+WHERE tipo = 'SUV Compacta' AND valor < 30000.00;
+Atividade 2: Junção Simples
+sqlCopy code
+SELECT c.cliente, con.concessionaria
+FROM clientes c
+JOIN concessionarias con ON c.id_concessionarias = con.id_concessionarias;
+Atividade 3: Contagem e Agrupamento
+sqlCopy code
+SELECT id_concessionarias, COUNT(*) AS numero_vendedores
+FROM vendedores
+GROUP BY id_concessionarias;
+Atividade 4: Subconsulta
+sqlCopy code
+SELECT tipo, MAX(valor) AS valor_maximo
+FROM veiculos
+GROUP BY tipo;
+Atividade 5: Junção Múltipla
+sqlCopy code
+SELECT cl.cliente, v.nome AS veiculo, vd.valor_pago
+FROM vendas vd
+JOIN clientes cl ON vd.id_clientes = cl.id_clientes
+JOIN veiculos v ON vd.id_veiculos = v.id_veiculos;
+Atividade 6: Filtro com Agregação
+sqlCopy code
+SELECT id_concessionarias, COUNT(*) AS total_vendas
+FROM vendas
+GROUP BY id_concessionarias
+HAVING COUNT(*) > 5;
+Atividade 7: Consulta com ORDER BY e LIMIT
+sqlCopy code
+SELECT nome, valor
+FROM veiculos
+ORDER BY valor DESC
+LIMIT 3;
+Atividade 8: Consulta com Datas
+sqlCopy code
+SELECT nome, data_inclusao
+FROM veiculos
+WHERE data_inclusao > CURRENT_TIMESTAMP - INTERVAL '1 month';
+Atividade 9: Junção Externa
+Descrição: Liste todas as cidades e qualquer concessionária nelas, se houver.
+
+sqlCopy code
+SELECT c.cidade, con.concessionaria
+FROM cidades c
+LEFT JOIN concessionarias con ON c.id_cidades = con.id_cidades;
+Atividade 10: Consulta com Várias Condições
+sqlCopy code
+SELECT cl.cliente, v.nome AS veiculo, v.valor
+FROM vendas vd
+JOIN veiculos v ON vd.id_veiculos = v.id_veiculos
+JOIN clientes cl ON vd.id_clientes = cl.id_clientes
+WHERE v.tipo = 'SUV Premium Híbrida' OR v.valor > 60000.00;
+
+
